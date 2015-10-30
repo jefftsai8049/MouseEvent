@@ -28,6 +28,7 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QPushButton *open_camera_pushButton;
+    QPushButton *grabcut_pushButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -42,6 +43,9 @@ public:
         open_camera_pushButton = new QPushButton(centralWidget);
         open_camera_pushButton->setObjectName(QStringLiteral("open_camera_pushButton"));
         open_camera_pushButton->setGeometry(QRect(20, 30, 161, 71));
+        grabcut_pushButton = new QPushButton(centralWidget);
+        grabcut_pushButton->setObjectName(QStringLiteral("grabcut_pushButton"));
+        grabcut_pushButton->setGeometry(QRect(20, 170, 161, 61));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -63,6 +67,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         open_camera_pushButton->setText(QApplication::translate("MainWindow", "Open Camera", 0));
+        grabcut_pushButton->setText(QApplication::translate("MainWindow", "GrabCut", 0));
     } // retranslateUi
 
 };
