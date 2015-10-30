@@ -100,6 +100,11 @@ void mouseMove(int event, int x, int y, int flag, void *param)
         {
             return;
         }
+        if(xEnd > dst.cols || yEnd > dst.rows)
+        {
+            xEnd = dst.cols;
+            yEnd = dst.rows;
+        }
 
         quadrantChange(xStart,xEnd,yStart,yEnd);
         cv::rectangle(dst,cv::Rect(xStart,yStart,xEnd-xStart
@@ -168,6 +173,15 @@ void MainWindow::on_grabcut_pushButton_clicked()
     //存放前景模型用
     cv::Mat fgdModel;
     fgdModel.create(1,65,CV_64FC1);
+
+    for(int i = 0 ; i < bgdModel.rows ; i++)
+    {
+        for(int j = 0 ; j < bgdModel.cols ; j++)
+        {
+            bgdModel.at<double>(i,j) = 0;
+            fgdModel.at<double>(i,j) = 0;
+        }
+    }
 
     cv::Mat maskReal = maskImg.clone();
 
