@@ -3,3 +3,5 @@ Makefile
 *.bmp
 debug/
 img.jpg
+ok/
+release/

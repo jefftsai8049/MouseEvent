@@ -7,6 +7,7 @@
 cv::Mat img;
 cv::Mat cutImg;
 cv::Mat maskImg;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -28,6 +29,7 @@ void MainWindow::on_open_camera_pushButton_clicked()
 
     cap.read(src);
     cap.release();
+
     cv::imshow("src",src);
     cv::setMouseCallback("src",mouseMove,0);
 
@@ -169,21 +171,13 @@ void MainWindow::on_grabcut_pushButton_clicked()
 {
     //存放背景模型用
     cv::Mat bgdModel;
-    bgdModel.create(1,65,CV_64FC1);
+    bgdModel.zeros(1,65,CV_64FC1);
     //存放前景模型用
     cv::Mat fgdModel;
-    fgdModel.create(1,65,CV_64FC1);
+    fgdModel.zeros(1,65,CV_64FC1);
 
-    for(int i = 0 ; i < bgdModel.rows ; i++)
-    {
-        for(int j = 0 ; j < bgdModel.cols ; j++)
-        {
-            bgdModel.at<double>(i,j) = 0;
-            fgdModel.at<double>(i,j) = 0;
-        }
-    }
 
-    cv::Mat maskReal = maskImg.clone();
+    this->maskReal = maskImg.clone();
 
     for(int i = 0;i<maskReal.rows;i++)
     {
@@ -208,7 +202,8 @@ void MainWindow::on_grabcut_pushButton_clicked()
     }
 
     //背景分離主函式
-    cv::grabCut(cutImg,maskReal,cv::Rect(0,0,cutImg.cols-1,cutImg.rows-1),bgdModel,fgdModel,5,cv::GC_INIT_WITH_MASK|cv::GC_INIT_WITH_RECT);
+    cv::grabCut(cutImg,maskReal,cv::Rect(0,0,cutImg.cols-1,cutImg.rows-1)
+                ,bgdModel,fgdModel,5,cv::GC_INIT_WITH_MASK|cv::GC_INIT_WITH_RECT);
 
     for(int i = 0;i<maskReal.rows;i++)
     {
@@ -243,4 +238,91 @@ void MainWindow::on_grabcut_pushButton_clicked()
 
     cv::imshow("result",foreground);
     cv::imshow("maskOUT",maskReal);
+}
+
+
+
+
+
+
+
+
+
+void MainWindow::on_recognize_pushButton_clicked()
+{
+
+    cv::Mat src = this->maskReal.clone();
+    //紀錄輪廓點
+    std::vector<std::vector<cv::Point> > contours;
+    //紀錄階層
+    std::vector<cv::Vec4i> hierarchy;
+
+    //偵測輪廓
+    cv::findContours(src,contours,hierarchy,cv::RETR_LIST,cv::CHAIN_APPROX_SIMPLE,cv::Point(0,0));
+
+    //空圖片準備畫圖使用
+    cv::Mat draw = cv::Mat::zeros(cv::Size(src.cols,src.rows),CV_8UC3);
+
+    //紀錄凹型
+    std::vector<std::vector<cv::Point> > hull;
+    hull.resize(contours.size());
+
+    //紀錄凹型(INT版本)
+    std::vector<std::vector<int> > hullInt;
+    hullInt.resize(contours.size());
+
+    //紀錄缺陷
+    std::vector<std::vector<cv::Vec4i> > defects;
+    defects.resize(contours.size());
+
+    int number = 1;
+
+    for(int i = 0; i< contours.size();i++)
+    {
+        //畫輪廓
+        cv::drawContours(draw,contours,i,cv::Scalar(rand()%255,rand()%255,rand()%255));
+
+        //偵測凹型
+        cv::convexHull(cv::Mat(contours[i]),hull[i]);
+        //偵測凹型(Int版本)
+        cv::convexHull(cv::Mat(contours[i]),hullInt[i]);
+        //畫外輪廓
+        cv::drawContours(draw,hull,i,cv::Scalar(rand()%255,rand()%255,rand()%255));
+        //找外輪廓與內輪廓的缺陷多邊形
+        cv::convexityDefects(cv::Mat(contours[i]),hullInt[i],defects[i]);
+
+        //找突出與凹陷點
+
+        for(int j = 0;j < defects.size();j++)
+        {
+            cv::Point ptStart(contours[i][defects[i][j][0]]);
+            cv::Point ptEnd(contours[i][defects[i][j][1]]);
+            cv::Point ptFar(contours[i][defects[i][j][2]]);
+
+            int depth = defects[i][j][3];
+
+            //畫圖並且過濾高不足夠的形狀
+            if(depth > ui->min_horizontalSlider->value() && depth < ui->max_horizontalSlider->value())
+            {
+                cv::line( draw, ptStart, ptFar, CV_RGB(0,255,0), 2 );
+                cv::line( draw, ptEnd, ptFar, CV_RGB(0,255,0), 2 );
+                cv::circle( draw, ptStart,   4, cv::Scalar(255,0,100), 2 );
+                cv::circle( draw, ptEnd,   4, cv::Scalar(255,0,100), 2 );
+                cv::circle( draw, ptFar,   4, cv::Scalar(100,0,255), 2 );
+                number++;
+            }
+        }
+    }
+    cv::imshow("contour",draw);
+    ui->number_label->setText(QString::number(number));
+}
+
+void MainWindow::on_min_horizontalSlider_valueChanged(int value)
+{
+    ui->min_label->setText(QString::number(ui->min_horizontalSlider->value()));
+}
+
+void MainWindow::on_max_horizontalSlider_valueChanged(int value)
+{
+    ui->max_label->setText(QString::number(ui->max_horizontalSlider->value()));
 }

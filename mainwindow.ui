@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="open_camera_pushButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
+      <x>10</x>
+      <y>10</y>
       <width>161</width>
       <height>71</height>
      </rect>
@@ -30,14 +30,110 @@
    <widget class="QPushButton" name="grabcut_pushButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>170</y>
+      <x>10</x>
+      <y>90</y>
       <width>161</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
      <string>GrabCut</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="recognize_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Recognize</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="min_horizontalSlider">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>30</y>
+      <width>160</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>500</number>
+    </property>
+    <property name="value">
+     <number>70</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QSlider" name="max_horizontalSlider">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>110</y>
+      <width>160</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>500</number>
+    </property>
+    <property name="value">
+     <number>140</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="max_label">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>80</y>
+      <width>47</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="min_label">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>10</y>
+      <width>47</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="number_label">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>180</y>
+      <width>61</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>36</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

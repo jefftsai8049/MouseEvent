@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
 
 #include <opencv.hpp>
 
@@ -28,8 +29,16 @@ private slots:
 
     void on_grabcut_pushButton_clicked();
 
+    void on_recognize_pushButton_clicked();
+
+    void on_min_horizontalSlider_valueChanged(int value);
+
+    void on_max_horizontalSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
+
+    cv::Mat maskReal;
 };
 
 #endif // MAINWINDOW_H
