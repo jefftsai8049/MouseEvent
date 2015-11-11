@@ -28,12 +28,15 @@
     </property>
    </widget>
    <widget class="QPushButton" name="grabcut_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>90</y>
       <width>161</width>
-      <height>61</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -41,12 +44,15 @@
     </property>
    </widget>
    <widget class="QPushButton" name="recognize_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>160</y>
+      <y>170</y>
       <width>161</width>
-      <height>61</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">

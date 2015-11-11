@@ -53,10 +53,12 @@ public:
         open_camera_pushButton->setGeometry(QRect(10, 10, 161, 71));
         grabcut_pushButton = new QPushButton(centralWidget);
         grabcut_pushButton->setObjectName(QStringLiteral("grabcut_pushButton"));
-        grabcut_pushButton->setGeometry(QRect(10, 90, 161, 61));
+        grabcut_pushButton->setEnabled(false);
+        grabcut_pushButton->setGeometry(QRect(10, 90, 161, 71));
         recognize_pushButton = new QPushButton(centralWidget);
         recognize_pushButton->setObjectName(QStringLiteral("recognize_pushButton"));
-        recognize_pushButton->setGeometry(QRect(10, 160, 161, 61));
+        recognize_pushButton->setEnabled(false);
+        recognize_pushButton->setGeometry(QRect(10, 170, 161, 71));
         min_horizontalSlider = new QSlider(centralWidget);
         min_horizontalSlider->setObjectName(QStringLiteral("min_horizontalSlider"));
         min_horizontalSlider->setGeometry(QRect(210, 30, 160, 22));

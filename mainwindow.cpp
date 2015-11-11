@@ -22,6 +22,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_open_camera_pushButton_clicked()
 {
+    ui->grabcut_pushButton->setEnabled(1);
     //讀取攝影機影像
     cv::VideoCapture cap;
     cap.open(0);
@@ -169,6 +170,7 @@ void imageLabeling(int event, int x, int y, int flag, void *param)
 
 void MainWindow::on_grabcut_pushButton_clicked()
 {
+    ui->recognize_pushButton->setEnabled(1);
     //存放背景模型用
     cv::Mat bgdModel;
     bgdModel.zeros(1,65,CV_64FC1);
@@ -251,6 +253,7 @@ void MainWindow::on_grabcut_pushButton_clicked()
 void MainWindow::on_recognize_pushButton_clicked()
 {
 
+
     cv::Mat src = this->maskReal.clone();
     //紀錄輪廓點
     std::vector<std::vector<cv::Point> > contours;
@@ -293,14 +296,13 @@ void MainWindow::on_recognize_pushButton_clicked()
 
         //找突出與凹陷點
 
-        for(int j = 0;j < defects.size();j++)
+        for(int j = 0;j < defects[i].size();j++)
         {
             cv::Point ptStart(contours[i][defects[i][j][0]]);
             cv::Point ptEnd(contours[i][defects[i][j][1]]);
             cv::Point ptFar(contours[i][defects[i][j][2]]);
 
-            int depth = defects[i][j][3];
-
+            int depth = defects[i][j][3]/256;
             //畫圖並且過濾高不足夠的形狀
             if(depth > ui->min_horizontalSlider->value() && depth < ui->max_horizontalSlider->value())
             {
